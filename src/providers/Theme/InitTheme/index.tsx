@@ -1,39 +1,50 @@
-'use client';
+import Script from 'next/script'
+import React from 'react'
 
-import { useServerInsertedHTML } from 'next/navigation';
+import { defaultTheme, themeLocalStorageKey } from '../ThemeSelector/types'
 
-export function InitTheme() {
-  useServerInsertedHTML(() => {
-    const themeScript = `
-      (function() {
-        function getImplicitPreference() {
-          var mediaQuery = '(prefers-color-scheme: dark)';
-          var mql = window.matchMedia(mediaQuery);
-          var hasImplicitPreference = typeof mql.matches === 'boolean';
-          if (hasImplicitPreference) {
-            return mql.matches ? 'dark' : 'light';
-          }
-          return null;
-        }
+export const InitTheme: React.FC = () => {
+  return (
+    // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
+    <Script
+      dangerouslySetInnerHTML={{
+        __html: `
+  (function () {
+    function getImplicitPreference() {
+      var mediaQuery = '(prefers-color-scheme: dark)'
+      var mql = window.matchMedia(mediaQuery)
+      var hasImplicitPreference = typeof mql.matches === 'boolean'
 
-        var themeToSet = 'light';
-        var preference = window.localStorage.getItem('payload-theme');
+      if (hasImplicitPreference) {
+        return mql.matches ? 'dark' : 'light'
+      }
 
-        if (preference === 'dark' || preference === 'light') {
-          themeToSet = preference;
-        } else {
-          var implicitPreference = getImplicitPreference();
-          if (implicitPreference) {
-            themeToSet = implicitPreference;
-          }
-        }
+      return null
+    }
 
-        document.documentElement.setAttribute('data-theme', themeToSet);
-      })();
-    `;
+    function themeIsValid(theme) {
+      return theme === 'light' || theme === 'dark'
+    }
 
-    return <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
-  });
+    var themeToSet = '${defaultTheme}'
+    var preference = window.localStorage.getItem('${themeLocalStorageKey}')
 
-  return null;
+    if (themeIsValid(preference)) {
+      themeToSet = preference
+    } else {
+      var implicitPreference = getImplicitPreference()
+
+      if (implicitPreference) {
+        themeToSet = implicitPreference
+      }
+    }
+
+    document.documentElement.setAttribute('data-theme', themeToSet)
+  })();
+  `,
+      }}
+      id="theme-script"
+      strategy="beforeInteractive"
+    />
+  )
 }

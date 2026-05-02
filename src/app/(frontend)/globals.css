@@ -138,7 +138,7 @@
   --secondary-foreground: oklch(98.5% 0 0deg);
   --muted: oklch(26.9% 0 0deg);
   --muted-foreground: oklch(70.8% 0 0deg);
-  --accent: oklch(91.676% 0.19146 101.417);
+  --accent: oklch(26.9% 0 0deg);
   --accent-foreground: oklch(98.5% 0 0deg);
   --destructive: oklch(39.6% 0.141 25.723deg);
   --destructive-foreground: oklch(63.7% 0.237 25.331deg);
@@ -221,57 +221,4 @@ html {
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
-}
-
-/* Gold sparkle animation for hero text */
-.gold-sparkle {
-  background: linear-gradient(
-    135deg,
-    #d4af37 0%,
-    #ffd700 25%,
-    #f9e076 50%,
-    #ffd700 75%,
-    #d4af37 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 3s linear infinite;
-  display: inline-block;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 200% 50%;
-  }
-}
-
-/* Optional: add tiny sparkles via pseudo-element for extra magic */
-.gold-sparkle::before {
-  content: "✨";
-  position: absolute;
-  font-size: 0.8em;
-  opacity: 0;
-  animation: sparkle 2s ease-in-out infinite;
-  left: -0.5em;
-  top: -0.2em;
-}
-
-.gold-sparkle::after {
-  content: "✨";
-  position: absolute;
-  font-size: 0.6em;
-  opacity: 0;
-  animation: sparkle 2.5s ease-in-out infinite 0.5s;
-  right: -0.8em;
-  bottom: -0.1em;
-}
-
-@keyframes sparkle {
-  0%, 100% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1); }
 }

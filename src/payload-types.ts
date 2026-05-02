@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    products: Product;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,6 +95,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -112,10 +114,14 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    navigation: Navigation;
+    'homepage-hero': HomepageHero;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+    'homepage-hero': HomepageHeroSelect<false> | HomepageHeroSelect<true>;
   };
   locale: null;
   widgets: {
@@ -782,6 +788,87 @@ export interface Form {
   createdAt: string;
 }
 /**
+ * Add products here. They appear on the storefront catalog grid automatically.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  name: string;
+  /**
+   * Auto-filled from name. e.g. "my-product" → /shop/my-product
+   */
+  slug: string;
+  /**
+   * First image is shown in the catalog grid. Add more for the product detail page.
+   */
+  images?:
+    | {
+        image: number | Media;
+        /**
+         * Describe the image for accessibility.
+         */
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Enter price in Pula (e.g. 250 = P250.00)
+   */
+  price: number;
+  /**
+   * Original price shown as strikethrough. Leave blank if no sale.
+   */
+  compareAtPrice?: number | null;
+  category: number | Category;
+  /**
+   * Optional tags for filtering (e.g. 'new', 'featured', 'sale')
+   */
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown on the catalog grid card. Keep it under 120 characters.
+   */
+  description?: string | null;
+  /**
+   * Shown on the product detail page. Supports formatting.
+   */
+  details?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Set to 0 to mark as out of stock.
+   */
+  stock?: number | null;
+  /**
+   * Featured products appear first in the catalog grid.
+   */
+  featured?: boolean | null;
+  /**
+   * Only 'Published' products appear on the frontend.
+   */
+  status: 'draft' | 'published' | 'archived';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -990,6 +1077,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1358,6 +1449,37 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  price?: T;
+  compareAtPrice?: T;
+  category?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  description?: T;
+  details?: T;
+  stock?: T;
+  featured?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -1690,6 +1812,98 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Manage the site navigation links. Changes here reflect on the live site immediately.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  /**
+   * The brand name shown in the top-left of the navbar.
+   */
+  logo?: string | null;
+  /**
+   * Add, remove, or reorder navigation links. Drag to reorder.
+   */
+  links?:
+    | {
+        label: string;
+        /**
+         * e.g. /shop or https://example.com
+         */
+        href: string;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The button shown on the right side of the navbar.
+   */
+  cta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Controls the full-screen hero section on the homepage. Changes reflect on the live site immediately.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-hero".
+ */
+export interface HomepageHero {
+  id: number;
+  /**
+   * Choose what fills the hero background. Upload your media below after selecting.
+   */
+  backgroundType: 'gradient' | 'image' | 'video';
+  /**
+   * Shown when Background Type is set to 'Image'. Recommended: at least 1920×1080px.
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Shown when Background Type is set to 'Video'. Upload an MP4. Keep under 10MB for fast loading. The video loops silently and autoplays.
+   */
+  backgroundVideo?: (number | null) | Media;
+  /**
+   * Dark overlay on top of the image/video to keep text readable. Not used for gradient backgrounds.
+   */
+  overlayOpacity?: ('light' | 'medium' | 'heavy') | null;
+  /**
+   * Controls the four aurora blobs. Use any valid CSS colour (hex, hsl, rgb).
+   */
+  gradientColors?: {
+    topRight?: string | null;
+    bottomLeft?: string | null;
+    midLeft?: string | null;
+    bottomRight?: string | null;
+  };
+  /**
+   * Large display text. Keep under 5 words.
+   */
+  headline: string;
+  /**
+   * Animated pill above the headline. Leave blank to hide.
+   */
+  badge?: string | null;
+  primaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  secondaryCta?: {
+    label?: string | null;
+    href?: string | null;
+  };
+  /**
+   * Tiny label above the scroll line. Leave blank to hide.
+   */
+  scrollLabel?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1731,6 +1945,66 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  logo?: T;
+  links?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-hero_select".
+ */
+export interface HomepageHeroSelect<T extends boolean = true> {
+  backgroundType?: T;
+  backgroundImage?: T;
+  backgroundVideo?: T;
+  overlayOpacity?: T;
+  gradientColors?:
+    | T
+    | {
+        topRight?: T;
+        bottomLeft?: T;
+        midLeft?: T;
+        bottomRight?: T;
+      };
+  headline?: T;
+  badge?: T;
+  primaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  secondaryCta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
+  scrollLabel?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

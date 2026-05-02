@@ -18,17 +18,21 @@ const nextConfig: NextConfig = {
     loadPaths: ['./node_modules/@payloadcms/ui/dist/scss/'],
   },
   images: {
-     localPatterns: [
+    localPatterns: [
       {
-        pathname: '/api/media/file/**',  // already present for media
+        pathname: '/api/media/file/**',
       },
-      {
-        pathname: '/logo.png',           // 👈 add your logo path
-      },
-      // optionally, allow all images in the public folder:
-      {
-        pathname: '/**',                 // ⚠️ use with caution
-      },
+    ],
+    qualities: [100],
+    remotePatterns: [
+      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
+        const url = new URL(item)
+
+        return {
+          hostname: url.hostname,
+          protocol: url.protocol.replace(':', '') as 'http' | 'https',
+        }
+      }),
     ],
   },
   webpack: (webpackConfig) => {

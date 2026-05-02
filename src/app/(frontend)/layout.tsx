@@ -1,62 +1,27 @@
-import type { Metadata } from 'next'
-import { Playfair_Display, DM_Sans } from 'next/font/google'
-import React from 'react'
-import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/Footer/Component'
-import  ImageCarousel from '@/components/ImageCarousel'
-import ContactPage from './contact/page'
-import { Providers } from '@/providers'
-import { InitTheme } from '@/providers/Theme/InitTheme'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
-import Navbar from '@/components/layout/Navbar'
-import './globals.css'
-import { getServerSideURL } from '@/utilities/getURL'
-import AboutPage from './about/page'
-import ShopPage from './shop/page'
-
-const display = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-})
-
-const body = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-body',
-  display: 'swap',
-})
-
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { isEnabled } = await draftMode()
-
-  return (
-    <html className={`${display.variable} ${body.variable}`} lang="en" suppressHydrationWarning>
-      <head>
-        <InitTheme />
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-      </head>
-      <body className="antialiased bg-surface text-slate-900">
-        <Providers>
-          <AdminBar adminBarProps={{ preview: isEnabled }} />
-          <Navbar />
-          {children}
-          <ShopPage />
-          <AboutPage />
-          <ContactPage />
-          <Footer />
-        </Providers>
-      </body>
-    </html>
-  )
-}
+import type { Metadata } from "next";
+import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-    creator: '@payloadcms',
+  title: {
+    template: "%s | Storefront",
+    default:  "Storefront – Curated Products",
   },
+  description: "A living catalog of products made for real life.",
+  openGraph: {
+    siteName: "Storefront",
+    type: "website",
+  },
+};
+
+export default function FrontendLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      {children}
+      <Footer />
+    </>
+  );
 }
