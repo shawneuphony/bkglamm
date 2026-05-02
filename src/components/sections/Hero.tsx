@@ -33,10 +33,10 @@ const FALLBACK: HeroData = {
   backgroundVideo: null,
   overlayOpacity:  "medium",
   gradientColors: {
-    topRight:    "#6d28d9",
-    bottomLeft:  "#9f1239",
-    midLeft:     "#1e40af",
-    bottomRight: "#581c87",
+    topRight:    "#C9962A",   /* warm gold */
+    bottomLeft:  "#8D5524",   /* deep mahogany */
+    midLeft:     "#4A2912",   /* rich espresso */
+    bottomRight: "#F5C842",   /* bright gold highlight */
   },
   headline:     "A living catalog.",
   badge:        "New arrivals every week",
@@ -111,7 +111,7 @@ export default async function Hero() {
   const imageAlt = backgroundImage?.alt ?? headline;
 
   return (
-    <section className="relative min-h-screen bg-[#09090f] overflow-hidden flex flex-col items-center justify-end pb-36">
+    <section className="relative min-h-screen bg-[#1A0D04] overflow-hidden flex flex-col items-center justify-end pb-36">
 
       {/* ── Static image background (server-rendered) ── */}
       {backgroundType === "image" && imageUrl && (
@@ -153,15 +153,15 @@ export default async function Hero() {
       <div className="relative z-10 text-center px-6 mb-20 space-y-6">
         {badge && (
           <div className="flex justify-center">
-            <span className="inline-flex items-center gap-2 bg-white/[0.07] backdrop-blur border border-white/10 text-white/60 text-[0.68rem] font-body font-medium tracking-[0.1em] uppercase px-4 py-1.5 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-pulse" />
+            <span className="inline-flex items-center gap-2 bg-[#C9962A]/[0.10] backdrop-blur border border-[#C9962A]/20 text-[#F5DC90]/70 text-[0.68rem] font-body font-medium tracking-[0.1em] uppercase px-4 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F5C842]/60 animate-pulse" />
               {badge}
             </span>
           </div>
         )}
 
         <h1
-          className="font-display font-normal text-white/90 leading-none tracking-tight"
+          className="font-display font-normal text-[#F5DC90]/90 leading-none tracking-tight"
           style={{ fontSize: "clamp(3.2rem, 8vw, 6.5rem)" }}
         >
           {headline}
@@ -171,10 +171,10 @@ export default async function Hero() {
       {/* Scroll cue */}
       {scrollLabel && (
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
-          <span className="text-[0.6rem] font-body tracking-[0.18em] uppercase text-white/30">
+          <span className="text-[0.6rem] font-body tracking-[0.18em] uppercase text-[#C9962A]/35">
             {scrollLabel}
           </span>
-          <div className="w-px h-10 bg-gradient-to-b from-transparent to-white/30" />
+          <div className="w-px h-10 bg-gradient-to-b from-transparent to-[#C9962A]/40" />
         </div>
       )}
 
@@ -182,13 +182,13 @@ export default async function Hero() {
       <div className="relative z-20 flex items-center gap-4 mb-10">
         <Link
           href={primaryCta.href}
-          className="font-body text-[0.75rem] tracking-[0.1em] uppercase font-medium text-white/90 bg-white/10 hover:bg-white/20 border border-white/[0.18] hover:border-white/35 px-7 py-3 rounded-full transition-all"
+          className="font-body text-[0.75rem] tracking-[0.1em] uppercase font-medium text-[#1A0D04] bg-[#C9962A] hover:bg-[#F5C842] border border-[#F5C842]/30 hover:border-[#F5C842] px-7 py-3 rounded-full transition-all"
         >
           {primaryCta.label}
         </Link>
         <Link
           href={secondaryCta.href}
-          className="font-body text-[0.75rem] tracking-[0.1em] uppercase font-normal text-white/45 hover:text-white/80 transition-colors"
+          className="font-body text-[0.75rem] tracking-[0.1em] uppercase font-normal text-[#C9962A]/55 hover:text-[#F5C842] transition-colors"
         >
           {secondaryCta.label} →
         </Link>

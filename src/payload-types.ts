@@ -116,12 +116,18 @@ export interface Config {
     footer: Footer;
     navigation: Navigation;
     'homepage-hero': HomepageHero;
+    'site-footer': SiteFooter;
+    'about-page': AboutPage;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     'homepage-hero': HomepageHeroSelect<false> | HomepageHeroSelect<true>;
+    'site-footer': SiteFooterSelect<false> | SiteFooterSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1904,6 +1910,179 @@ export interface HomepageHero {
   createdAt?: string | null;
 }
 /**
+ * Controls the site-wide footer. All columns, links, tagline and social links are editable here.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-footer".
+ */
+export interface SiteFooter {
+  id: number;
+  /**
+   * Displayed in the top-left of the footer.
+   */
+  brandName?: string | null;
+  /**
+   * Short sentence beneath the brand name. Keep under 120 characters.
+   */
+  tagline?: string | null;
+  /**
+   * Each column has a heading and a list of links. Drag to reorder.
+   */
+  columns?:
+    | {
+        heading: string;
+        links?:
+          | {
+              label: string;
+              href: string;
+              openInNewTab?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown as icon links in the footer. Supported platforms: instagram, twitter, facebook, tiktok, linkedin, youtube.
+   */
+  socials?:
+    | {
+        platform: 'instagram' | 'twitter' | 'facebook' | 'tiktok' | 'linkedin' | 'youtube';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown beside the year and brand name. e.g. "All rights reserved."
+   */
+  copyrightText?: string | null;
+  /**
+   * Small links in the bottom bar — Privacy Policy, Terms, etc.
+   */
+  bottomLinks?:
+    | {
+        label: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Controls all content on the /about page. Edit each section independently.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  hero: {
+    /**
+     * Small uppercase label above the headline.
+     */
+    eyebrow?: string | null;
+    /**
+     * Large display headline. Keep under 6 words.
+     */
+    headline: string;
+    subtext?: string | null;
+    /**
+     * Full-width image beneath the headline. Recommended: 1600×900px landscape.
+     */
+    image?: (number | null) | Media;
+  };
+  mission?: {
+    label?: string | null;
+    statement?: string | null;
+    /**
+     * Three or four short value statements shown as cards.
+     */
+    pillars?:
+      | {
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Numbers that tell your story — e.g. '500+ Products', '12,000 Customers'.
+   */
+  stats?:
+    | {
+        /**
+         * e.g. "500+"
+         */
+        value: string;
+        /**
+         * e.g. "Products curated"
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional. Leave members empty to hide this section.
+   */
+  team?: {
+    label?: string | null;
+    headline?: string | null;
+    members?:
+      | {
+          photo?: (number | null) | Media;
+          name: string;
+          role?: string | null;
+          bio?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  cta?: {
+    headline?: string | null;
+    subtext?: string | null;
+    buttonLabel?: string | null;
+    buttonHref?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Global site-wide settings. WhatsApp number, contact details, and other configuration used across the site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * Include country code, no + or spaces. Botswana example: 26771234567 (267 = country code, then your number). This is used for the 'Book Now' button on all product pages.
+   */
+  whatsappNumber: string;
+  /**
+   * Shown on the contact page and footer.
+   */
+  contactEmail?: string | null;
+  /**
+   * Display-only phone number shown on the contact page.
+   */
+  contactPhone?: string | null;
+  /**
+   * Shown on the contact page.
+   */
+  address?: string | null;
+  /**
+   * Used as the default page title and in browser tabs.
+   */
+  siteTitle?: string | null;
+  /**
+   * Default description used in search engine results.
+   */
+  siteDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2005,6 +2184,121 @@ export interface HomepageHeroSelect<T extends boolean = true> {
         href?: T;
       };
   scrollLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-footer_select".
+ */
+export interface SiteFooterSelect<T extends boolean = true> {
+  brandName?: T;
+  tagline?: T;
+  columns?:
+    | T
+    | {
+        heading?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              openInNewTab?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  socials?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  copyrightText?: T;
+  bottomLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        headline?: T;
+        subtext?: T;
+        image?: T;
+      };
+  mission?:
+    | T
+    | {
+        label?: T;
+        statement?: T;
+        pillars?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  team?:
+    | T
+    | {
+        label?: T;
+        headline?: T;
+        members?:
+          | T
+          | {
+              photo?: T;
+              name?: T;
+              role?: T;
+              bio?: T;
+              id?: T;
+            };
+      };
+  cta?:
+    | T
+    | {
+        headline?: T;
+        subtext?: T;
+        buttonLabel?: T;
+        buttonHref?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  whatsappNumber?: T;
+  contactEmail?: T;
+  contactPhone?: T;
+  address?: T;
+  siteTitle?: T;
+  siteDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -86,9 +86,9 @@ function formatPrice(price: number): string {
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-40 text-center">
-      <div className="w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center mb-6">
+      <div className="w-14 h-14 rounded-2xl bg-[#C9962A]/[0.08] border border-[#C9962A]/15 flex items-center justify-center mb-6">
         <svg
-          className="w-6 h-6 text-white/20"
+          className="w-6 h-6 text-[#C9962A]/30"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -101,10 +101,10 @@ function EmptyState() {
           />
         </svg>
       </div>
-      <p className="font-display text-2xl text-white/30 mb-2">
+      <p className="font-display text-2xl text-[#C9962A]/40 mb-2">
         No products yet
       </p>
-      <p className="font-body text-sm text-white/20 max-w-xs">
+      <p className="font-body text-sm text-[#C9962A]/25 max-w-xs">
         Add products in the admin panel — they'll appear here automatically.
       </p>
     </div>
@@ -123,7 +123,7 @@ function ProductCard({ product }: { product: Product }) {
     <Link href={`/shop/${product.slug}`} className="group block">
 
       {/* Image */}
-      <div className="relative overflow-hidden rounded-2xl bg-white/[0.04] border border-white/[0.07] aspect-[3/4]">
+      <div className="relative overflow-hidden rounded-2xl bg-[#2A1500]/60 border border-[#C9962A]/[0.12] aspect-[3/4]">
         <Image
           src={imageUrl}
           alt={imageAlt}
@@ -133,7 +133,7 @@ function ProductCard({ product }: { product: Product }) {
         />
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-all duration-300" />
+        <div className="absolute inset-0 bg-[#1A0D04]/0 group-hover:bg-[#1A0D04]/20 transition-all duration-300" />
 
         {/* Sale badge */}
         {isOnSale && (
@@ -151,7 +151,7 @@ function ProductCard({ product }: { product: Product }) {
 
         {/* View hint */}
         <div className="absolute inset-x-0 bottom-4 flex justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-          <span className="bg-black/40 backdrop-blur-md border border-white/15 text-white/90 text-[0.68rem] font-body tracking-widest uppercase px-5 py-2 rounded-full whitespace-nowrap">
+          <span className="bg-[#1A0D04]/60 backdrop-blur-md border border-[#C9962A]/30 text-[#F5C842]/90 text-[0.68rem] font-body tracking-widest uppercase px-5 py-2 rounded-full whitespace-nowrap">
             View product
           </span>
         </div>
@@ -160,24 +160,24 @@ function ProductCard({ product }: { product: Product }) {
       {/* Info */}
       <div className="mt-4 space-y-1.5 px-1">
         {categoryLabel && (
-          <span className="inline-block text-[0.62rem] font-body font-semibold tracking-[0.12em] uppercase text-white/30 border border-white/[0.09] px-2.5 py-0.5 rounded-full">
+          <span className="inline-block text-[0.62rem] font-body font-semibold tracking-[0.12em] uppercase text-[#C9962A]/50 border border-[#C9962A]/[0.18] px-2.5 py-0.5 rounded-full">
             {categoryLabel}
           </span>
         )}
-        <p className="font-display text-[1.1rem] font-normal text-white/85 group-hover:text-white transition-colors leading-snug">
+        <p className="font-display text-[1.1rem] font-normal text-[#F5DC90]/85 group-hover:text-[#F5C842] transition-colors leading-snug">
           {product.name}
         </p>
         {product.description && (
-          <p className="font-body text-[0.8rem] text-white/35 leading-relaxed line-clamp-2">
+          <p className="font-body text-[0.8rem] text-[#C9962A]/40 leading-relaxed line-clamp-2">
             {product.description}
           </p>
         )}
         <div className="flex items-center gap-2.5 pt-0.5">
-          <span className="font-body text-sm text-white/75">
+          <span className="font-body text-sm text-[#F5DC90]/75">
             {formatPrice(product.price)}
           </span>
           {isOnSale && (
-            <span className="font-body text-sm text-white/25 line-through">
+            <span className="font-body text-sm text-[#C9962A]/30 line-through">
               {formatPrice(product.compareAtPrice!)}
             </span>
           )}
@@ -203,7 +203,7 @@ export default async function CatalogGrid() {
       {/* Section header */}
       <div className="max-w-2xl mx-auto flex h-64 items-center justify-center">
         <div className="space-y-2 ">
-          <h2 className="font-display text-4xl md:text-7xl font-bold text-white/90 leading-none">
+          <h2 className="font-display text-4xl md:text-7xl font-bold text-[#F5DC90]/90 leading-none">
             get glamm'd up!
           </h2>
         </div>

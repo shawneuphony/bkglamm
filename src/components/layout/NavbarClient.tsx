@@ -50,12 +50,12 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
           visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
         )}
       >
-        <nav className="w-full max-w-5xl flex items-center justify-between px-5 md:px-7 py-3 md:py-3.5 rounded-full bg-white/[0.06] backdrop-blur-xl border border-white/10">
+        <nav className="w-full max-w-5xl flex items-center justify-between px-5 md:px-7 py-3 md:py-3.5 rounded-full bg-[#C9962A]/[0.10] backdrop-blur-xl border border-[#C9962A]/20">
 
           {/* Brand */}
           <Link
             href="/"
-            className="font-display text-[1.05rem] md:text-[1.1rem] font-semibold text-white/90 tracking-wide hover:text-white transition-colors"
+            className="font-display text-[1.05rem] md:text-[1.1rem] font-semibold text-[#F5DC90]/90 tracking-wide hover:text-[#F5C842] transition-colors"
           >
             {logo}
           </Link>
@@ -68,7 +68,7 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
                   href={link.href}
                   target={link.openInNewTab ? "_blank" : undefined}
                   rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                  className="text-[0.73rem] font-body font-normal tracking-[0.08em] uppercase text-white/50 hover:text-white/95 transition-colors"
+                  className="text-[0.73rem] font-body font-normal tracking-[0.08em] uppercase text-[#C9962A]/60 hover:text-[#F5C842] transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -79,14 +79,14 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
           {/* Desktop CTA */}
           <Link
             href={cta.href}
-            className="hidden md:inline-flex items-center text-[0.73rem] font-body font-medium tracking-[0.06em] uppercase text-white/90 bg-white/10 hover:bg-white/20 border border-white/[0.18] hover:border-white/35 px-5 py-2.5 rounded-full transition-all"
+            className="hidden md:inline-flex items-center text-[0.73rem] font-body font-medium tracking-[0.06em] uppercase text-[#1A0D04] bg-[#C9962A] hover:bg-[#F5C842] border border-[#F5C842]/30 hover:border-[#F5C842] px-5 py-2.5 rounded-full transition-all"
           >
             {cta.label}
           </Link>
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden text-white/70 hover:text-white p-1 transition-colors"
+            className="md:hidden text-[#C9962A]/80 hover:text-[#F5C842] p-1 transition-colors"
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
             aria-expanded={open}
@@ -99,7 +99,7 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
       {/* Mobile full-screen drawer */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-black/92 backdrop-blur-xl flex flex-col pt-24 px-8 gap-6 md:hidden",
+          "fixed inset-0 z-40 bg-[#1A0D04]/97 backdrop-blur-xl flex flex-col pt-24 px-8 gap-6 md:hidden",
           "transition-all duration-300",
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
@@ -111,7 +111,7 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
             href={link.href}
             target={link.openInNewTab ? "_blank" : undefined}
             rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-            className="font-display text-3xl font-light text-white/70 hover:text-white transition-colors"
+            className="font-display text-3xl font-light text-[#C9962A]/70 hover:text-[#F5C842] transition-colors"
             style={{ transitionDelay: open ? `${i * 40}ms` : "0ms" }}
             onClick={() => setOpen(false)}
           >
@@ -122,7 +122,7 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
         {/* Mobile CTA */}
         <Link
           href={cta.href}
-          className="mt-4 inline-flex self-start text-sm font-body tracking-widest uppercase font-medium text-white/90 bg-white/10 border border-white/20 hover:bg-white/20 px-6 py-3 rounded-full transition-all"
+          className="mt-4 inline-flex self-start text-sm font-body tracking-widest uppercase font-medium text-[#1A0D04] bg-[#C9962A] border border-[#F5C842]/30 hover:bg-[#F5C842] px-6 py-3 rounded-full transition-all"
           onClick={() => setOpen(false)}
         >
           {cta.label}

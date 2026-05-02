@@ -60,19 +60,19 @@ export default function HeroClient({
       >
         <div
           className="absolute w-[560px] h-[560px] rounded-full blur-[110px] -top-24 right-12 opacity-70"
-          style={{ backgroundColor: colors?.topRight ?? "#6d28d9" }}
+          style={{ backgroundColor: colors?.topRight ?? "#C9962A" }}
         />
         <div
           className="absolute w-[440px] h-[440px] rounded-full blur-[100px] bottom-0 -left-16 opacity-65"
-          style={{ backgroundColor: colors?.bottomLeft ?? "#9f1239" }}
+          style={{ backgroundColor: colors?.bottomLeft ?? "#8D5524" }}
         />
         <div
           className="absolute w-[360px] h-[360px] rounded-full blur-[90px] top-32 -left-10 opacity-55"
-          style={{ backgroundColor: colors?.midLeft ?? "#1e40af" }}
+          style={{ backgroundColor: colors?.midLeft ?? "#4A2912" }}
         />
         <div
           className="absolute w-[300px] h-[300px] rounded-full blur-[80px] bottom-20 right-48 opacity-60"
-          style={{ backgroundColor: colors?.bottomRight ?? "#581c87" }}
+          style={{ backgroundColor: colors?.bottomRight ?? "#F5C842" }}
         />
         {/* Grain */}
         <div

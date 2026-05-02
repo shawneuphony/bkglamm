@@ -4,17 +4,18 @@ import config from "@payload-config";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import BookNowButton from "@/components/ui/BookNowButton";
 
 export const revalidate = 60;
 
-// ── Generate static params for all published products ─────────
+// ── Static params ─────────────────────────────────────────────
 export async function generateStaticParams() {
   try {
     const payload = await getPayload({ config });
-    const result = await payload.find({
+    const result  = await payload.find({
       collection: "products",
-      where: { status: { equals: "published" } },
-      limit: 1000,
+      where:  { status: { equals: "published" } },
+      limit:  1000,
       select: { slug: true },
     });
     return result.docs.map((p: any) => ({ slug: p.slug }));
@@ -32,7 +33,7 @@ export async function generateMetadata({
   const { slug } = await params;
   try {
     const payload = await getPayload({ config });
-    const result = await payload.find({
+    const result  = await payload.find({
       collection: "products",
       where: { slug: { equals: slug } },
       limit: 1,
@@ -41,11 +42,22 @@ export async function generateMetadata({
     const product = result.docs[0] as any;
     if (!product) return { title: "Product not found" };
     return {
-      title: product.name,
+      title:       product.name,
       description: product.description ?? "",
     };
   } catch {
     return { title: "Product" };
+  }
+}
+
+// ── Fetch WhatsApp number from SiteSettings ───────────────────
+async function getWhatsappNumber(): Promise<string> {
+  try {
+    const payload = await getPayload({ config });
+    const settings = await payload.findGlobal({ slug: "site-settings" });
+    return (settings.whatsappNumber as string) || "26771234567";
+  } catch {
+    return "26771234567"; // fallback
   }
 }
 
@@ -58,17 +70,22 @@ export default async function ProductPage({
   const { slug } = await params;
 
   const payload = await getPayload({ config });
-  const result = await payload.find({
-    collection: "products",
-    where: {
-      slug:   { equals: slug },
-      status: { equals: "published" },
-    },
-    depth: 2,
-    limit: 1,
-  });
 
-  const product = result.docs[0] as any;
+  // Fetch product and WhatsApp number in parallel
+  const [productResult, whatsappNumber] = await Promise.all([
+    payload.find({
+      collection: "products",
+      where: {
+        slug:   { equals: slug },
+        status: { equals: "published" },
+      },
+      depth: 2,
+      limit: 1,
+    }),
+    getWhatsappNumber(),
+  ]);
+
+  const product = productResult.docs[0] as any;
   if (!product) notFound();
 
   const primaryImage =
@@ -102,7 +119,6 @@ export default async function ProductPage({
 
           {/* ── Images ── */}
           <div className="space-y-3">
-            {/* Primary image */}
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-white/[0.04] border border-white/[0.07]">
               <Image
                 src={primaryImage}
@@ -114,9 +130,8 @@ export default async function ProductPage({
               />
             </div>
 
-            {/* Thumbnail strip */}
             {product.images?.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+              <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-1">
                 {product.images.map((img: any, i: number) => {
                   const url = img?.image?.url ?? img?.image ?? "";
                   const alt = img?.alt ?? product.name;
@@ -140,10 +155,10 @@ export default async function ProductPage({
           </div>
 
           {/* ── Details ── */}
-          <div className="space-y-8 lg:pt-4">
+          <div className="space-y-7 lg:pt-4">
 
-            {/* Category + featured */}
-            <div className="flex items-center gap-2">
+            {/* Category + featured badges */}
+            <div className="flex items-center gap-2 flex-wrap">
               {categoryLabel && (
                 <span className="text-[0.65rem] font-body font-semibold tracking-[0.12em] uppercase text-white/35 border border-white/10 px-2.5 py-1 rounded-full">
                   {categoryLabel}
@@ -152,6 +167,11 @@ export default async function ProductPage({
               {product.featured && (
                 <span className="text-[0.65rem] font-body font-semibold tracking-[0.12em] uppercase text-amber-400/70 border border-amber-400/20 px-2.5 py-1 rounded-full">
                   Featured
+                </span>
+              )}
+              {isOnSale && (
+                <span className="text-[0.65rem] font-body font-semibold tracking-[0.12em] uppercase text-rose-400/80 border border-rose-400/20 px-2.5 py-1 rounded-full">
+                  On sale
                 </span>
               )}
             </div>
@@ -167,14 +187,14 @@ export default async function ProductPage({
                 P{product.price.toFixed(2)}
               </span>
               {isOnSale && (
-                <span className="font-body text-lg text-white/30 line-through">
-                  P{product.compareAtPrice.toFixed(2)}
-                </span>
-              )}
-              {isOnSale && (
-                <span className="font-body text-sm text-rose-400 font-medium">
-                  Save P{(product.compareAtPrice - product.price).toFixed(2)}
-                </span>
+                <>
+                  <span className="font-body text-lg text-white/30 line-through">
+                    P{product.compareAtPrice.toFixed(2)}
+                  </span>
+                  <span className="font-body text-sm text-rose-400 font-medium">
+                    Save P{(product.compareAtPrice - product.price).toFixed(2)}
+                  </span>
+                </>
               )}
             </div>
 
@@ -185,32 +205,35 @@ export default async function ProductPage({
               </p>
             )}
 
-            {/* Stock */}
-            <p className="font-body text-sm text-white/30">
-              {product.stock > 0
-                ? `${product.stock} in stock`
-                : "Out of stock"}
-            </p>
+            {/* Divider */}
+            <div className="border-t border-white/[0.07]" />
 
-            {/* CTA */}
-            <div className="flex gap-3 pt-2">
-              <button
-                disabled={product.stock === 0}
-                className="flex-1 font-body text-[0.8rem] tracking-widest uppercase font-medium text-white/90 bg-white/10 hover:bg-white/20 border border-white/[0.18] hover:border-white/35 py-4 rounded-full transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                {product.stock > 0 ? "Add to cart" : "Out of stock"}
-              </button>
-              <button
-                disabled={product.stock === 0}
-                className="font-body text-[0.8rem] tracking-widest uppercase font-medium text-white/90 bg-white/[0.06] hover:bg-white/15 border border-white/10 px-6 py-4 rounded-full transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                ♡
-              </button>
+            {/* Stock indicator */}
+            <div className="flex items-center gap-2">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  product.stock > 0 ? "bg-emerald-400" : "bg-white/20"
+                }`}
+              />
+              <p className="font-body text-sm text-white/35">
+                {product.stock > 0
+                  ? `${product.stock} in stock`
+                  : "Out of stock"}
+              </p>
             </div>
+
+            {/* ── Book Now button ── */}
+            <BookNowButton
+              productName={product.name}
+              productPrice={product.price}
+              productSlug={product.slug}
+              whatsappNumber={whatsappNumber}
+              stock={product.stock}
+            />
 
             {/* Tags */}
             {product.tags?.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-2">
+              <div className="flex flex-wrap gap-2 pt-1">
                 {product.tags.map((t: { tag: string }, i: number) => (
                   <span
                     key={i}
