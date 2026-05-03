@@ -32,7 +32,6 @@ export default function HeroClient({
   const blobRef  = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Gradient parallax — only active for gradient type
   useEffect(() => {
     if (backgroundType !== "gradient") return;
     const onMove = (e: MouseEvent) => {
@@ -45,13 +44,11 @@ export default function HeroClient({
     return () => window.removeEventListener("mousemove", onMove);
   }, [backgroundType]);
 
-  // Ensure video plays (some browsers block autoplay until interaction)
   useEffect(() => {
     if (backgroundType !== "video" || !videoRef.current) return;
     videoRef.current.play().catch(() => {});
   }, [backgroundType]);
 
-  // ── Gradient background ───────────────────────────────────
   if (backgroundType === "gradient") {
     return (
       <div
@@ -74,7 +71,6 @@ export default function HeroClient({
           className="absolute w-[300px] h-[300px] rounded-full blur-[80px] bottom-20 right-48 opacity-60"
           style={{ backgroundColor: colors?.bottomRight ?? "#F5C842" }}
         />
-        {/* Grain */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -86,7 +82,6 @@ export default function HeroClient({
     );
   }
 
-  // ── Video background ──────────────────────────────────────
   if (backgroundType === "video" && videoUrl) {
     return (
       <div className="absolute inset-0 pointer-events-none">
@@ -99,9 +94,7 @@ export default function HeroClient({
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Overlay for readability */}
         <div className={`absolute inset-0 ${overlayMap[overlayOpacity]}`} />
-        {/* Grain */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -113,6 +106,5 @@ export default function HeroClient({
     );
   }
 
-  // ── Fallback for image type (image is handled server-side via CSS) ──
   return null;
 }

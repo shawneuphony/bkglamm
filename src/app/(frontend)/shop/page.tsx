@@ -11,7 +11,7 @@ export const revalidate = 60;
 
 export default function ShopPage() {
   return (
-    <main className="min-h-screen bg-[#09090f] pt-28">
+    <main className="min-h-screen pt-28" style={{ background: "#0e0b08" }}>
       <CatalogGrid />
     </main>
   );

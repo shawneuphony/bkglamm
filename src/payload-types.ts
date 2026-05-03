@@ -1865,21 +1865,9 @@ export interface HomepageHero {
    * Choose what fills the hero background. Upload your media below after selecting.
    */
   backgroundType: 'gradient' | 'image' | 'video';
-  /**
-   * Shown when Background Type is set to 'Image'. Recommended: at least 1920×1080px.
-   */
   backgroundImage?: (number | null) | Media;
-  /**
-   * Shown when Background Type is set to 'Video'. Upload an MP4. Keep under 10MB for fast loading. The video loops silently and autoplays.
-   */
   backgroundVideo?: (number | null) | Media;
-  /**
-   * Dark overlay on top of the image/video to keep text readable. Not used for gradient backgrounds.
-   */
   overlayOpacity?: ('light' | 'medium' | 'heavy') | null;
-  /**
-   * Controls the four aurora blobs. Use any valid CSS colour (hex, hsl, rgb).
-   */
   gradientColors?: {
     topRight?: string | null;
     bottomLeft?: string | null;

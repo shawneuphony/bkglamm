@@ -1,31 +1,39 @@
 @import "tailwindcss";
 
-/* ── CSS custom properties ───────────────────────────────────── */
-:root {
+/* ── BKGlamm theme tokens ────────────────────────────────────── */
+@theme {
   --font-display: 'Cormorant Garamond', serif;
   --font-body:    'Outfit', sans-serif;
 
-  /* Brand — gold + melanin palette */
-  --color-gold-light:   #F5C842;
-  --color-gold:         #C9962A;
-  --color-gold-deep:    #8B6210;
-  --color-skin-warm:    #C68642;   /* warm caramel */
-  --color-skin-mid:     #8D5524;   /* deep mahogany */
-  --color-skin-rich:    #4A2912;   /* dark espresso */
-  --color-brand:        #C9962A;
-  --color-accent:       #F5C842;
-  --color-surface:      #2A1500;
+  --color-bg:           #0e0b08;
+  --color-surface:      #1a1510;
+  --color-surface-alt:  #221c14;
+  --color-surface-card: #1f1810;
+  --color-border:       #2e2419;
+  --color-border-light: #3d3020;
+  --color-gold:         #c9a96e;
+  --color-gold-muted:   #8a6e3e;
+  --color-gold-subtle:  #3d2e18;
+  --color-text:         #f0e6d3;
+  --color-text-muted:   #9a8470;
+  --color-text-faint:   #5a4e42;
+}
 
-  /* Page background — deep melanin-warm brown */
-  --color-bg:    #1A0D04;
-  --color-bg-2:  #221206;
+:root {
+  --bg:          #0e0b08;
+  --surface:     #1a1510;
+  --border:      #2e2419;
+  --gold:        #c9a96e;
+  --gold-muted:  #8a6e3e;
+  --gold-subtle: #3d2e18;
+  --text:        #f0e6d3;
+  --text-muted:  #9a8470;
+  --text-faint:  #5a4e42;
 }
 
 /* ── Base resets ─────────────────────────────────────────────── */
 @layer base {
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
+  *, *::before, *::after { box-sizing: border-box; }
 
   html {
     scroll-behavior: smooth;
@@ -34,8 +42,8 @@
   }
 
   body {
-    background-color: var(--color-bg);
-    color: rgba(245, 220, 160, 0.9);
+    background-color: #0e0b08;
+    color: #f0e6d3;
     font-family: var(--font-body);
     line-height: 1.6;
   }
@@ -43,117 +51,124 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     line-height: 1.1;
+    color: #f0e6d3;
   }
 
-  button {
-    cursor: pointer;
-    border: none;
-    background: none;
-  }
+  button { cursor: pointer; border: none; background: none; }
 
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 1.5px solid #c9a96e;
     outline-offset: 3px;
     border-radius: 4px;
   }
+  :focus:not(:focus-visible) { outline: none; }
 
-  :focus:not(:focus-visible) {
-    outline: none;
-  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #0e0b08; }
+  ::-webkit-scrollbar-thumb { background: #2e2419; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3d2e18; }
 
-  /* Gold-tinted scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #120800;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(201, 150, 42, 0.35);
-    border-radius: 9999px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(201, 150, 42, 0.6);
-  }
+  img, video { max-width: 100%; height: auto; display: block; }
+  a { color: inherit; text-decoration: none; }
 
-  img, video {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+  ::selection { background: #3d2e18; color: #c9a96e; }
 }
 
-/* ── Utility layer extras ────────────────────────────────────── */
+/* ── Utility classes ─────────────────────────────────────────── */
 @layer utilities {
-  /* Gold text gradient */
-  .text-gradient {
-    background: linear-gradient(135deg, #F5C842, #C9962A, #8D5524);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
 
-  /* Warm glass card utility */
+  /* Glass — warm dark */
   .glass {
-    background: rgba(201, 150, 42, 0.07);
+    background: rgba(14, 11, 8, 0.75);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(201, 150, 42, 0.15);
+    border: 1px solid rgba(201, 169, 110, 0.15);
   }
 
-  .glass-hover:hover {
-    background: rgba(201, 150, 42, 0.12);
-    border-color: rgba(201, 150, 42, 0.28);
+  /* Nav links */
+  .hover-gold {
+    color: #9a8470;
+    transition: color 0.2s;
+  }
+  .hover-gold:hover { color: #c9a96e; }
+
+  /* Footer links */
+  .hover-gold-muted {
+    color: #9a8470;
+    transition: color 0.2s;
+  }
+  .hover-gold-muted:hover { color: #c9a96e; }
+
+  /* Faint links (back arrows, bottom bar) */
+  .hover-gold-faint {
+    color: #5a4e42;
+    transition: color 0.2s;
+  }
+  .hover-gold-faint:hover { color: #9a8470; }
+
+  /* Gold outlined pill button */
+  .btn-gold-outline {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    border: 1px solid rgba(201, 169, 110, 0.4);
+    background: transparent;
+    padding: 0.7rem 1.8rem;
+    border-radius: 9999px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-gold-outline:hover {
+    background: rgba(201, 169, 110, 0.08);
+    border-color: rgba(201, 169, 110, 0.7);
   }
 
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  /* Pillar cards */
+  .card-warm {
+    background: #1a1510;
+    border: 1px solid #2e2419;
+    border-radius: 1rem;
+    transition: border-color 0.2s;
   }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  .card-warm:hover { border-color: #3d3020; }
+
+  /* Social icon links */
+  .hover-social {
+    color: #5a4e42;
+    transition: color 0.2s;
+  }
+  .hover-social:hover { color: #c9a96e; }
+
+  /* Scrollbar hide */
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* ── Back link hover (gold) ── */
+  .hover-gold-back {
+    color: #5a4e42;
+    transition: color 0.2s;
+  }
+  .hover-gold-back:hover {
+    color: #c9a96e;
   }
 }
 
-/* ── Animation keyframes ─────────────────────────────────────── */
+/* ── Animations ──────────────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
-}
-
-@keyframes goldPulse {
-  0%, 100% { opacity: 0.5; }
-  50%       { opacity: 1; }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.6s ease forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s ease forwards;
-}
-
-.animate-gold-pulse {
-  animation: goldPulse 2s ease-in-out infinite;
-}
-
-/* Stagger helpers */
+.animate-fade-up { animation: fadeUp 0.6s ease forwards; }
+.animate-fade-in { animation: fadeIn 0.4s ease forwards; }
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }

@@ -12,9 +12,7 @@ const Navigation: GlobalConfig = {
       type: "text",
       label: "Site Name / Logo Text",
       defaultValue: "Storefront",
-      admin: {
-        description: "The brand name shown in the top-left of the navbar.",
-      },
+      admin: { description: "The brand name shown in the top-left of the navbar." },
     },
     {
       name: "links",
@@ -22,66 +20,29 @@ const Navigation: GlobalConfig = {
       label: "Nav Links",
       minRows: 1,
       maxRows: 8,
-      admin: {
-        description: "Add, remove, or reorder navigation links. Drag to reorder.",
-        initCollapsed: false,
-      },
+      admin: { description: "Add, remove, or reorder navigation links. Drag to reorder.", initCollapsed: false },
       fields: [
         {
           type: "row",
           fields: [
-            {
-              name: "label",
-              type: "text",
-              label: "Label",
-              required: true,
-              admin: { width: "50%" },
-            },
-            {
-              name: "href",
-              type: "text",
-              label: "URL",
-              required: true,
-              admin: {
-                width: "50%",
-                description: "e.g. /shop or https://example.com",
-              },
-            },
+            { name: "label", type: "text", label: "Label", required: true, admin: { width: "50%" } },
+            { name: "href",  type: "text", label: "URL",   required: true, admin: { width: "50%", description: "e.g. /shop or https://example.com" } },
           ],
         },
-        {
-          name: "openInNewTab",
-          type: "checkbox",
-          label: "Open in new tab",
-          defaultValue: false,
-        },
+        { name: "openInNewTab", type: "checkbox", label: "Open in new tab", defaultValue: false },
       ],
     },
     {
       name: "cta",
       type: "group",
       label: "Call-to-Action Button",
-      admin: {
-        description: "The button shown on the right side of the navbar.",
-      },
+      admin: { description: "The button shown on the right side of the navbar." },
       fields: [
         {
           type: "row",
           fields: [
-            {
-              name: "label",
-              type: "text",
-              label: "Button Label",
-              defaultValue: "Shop Now",
-              admin: { width: "50%" },
-            },
-            {
-              name: "href",
-              type: "text",
-              label: "Button URL",
-              defaultValue: "/shop",
-              admin: { width: "50%" },
-            },
+            { name: "label", type: "text", label: "Button Label", defaultValue: "Shop Now", admin: { width: "50%" } },
+            { name: "href",  type: "text", label: "Button URL",   defaultValue: "/shop",    admin: { width: "50%" } },
           ],
         },
       ],

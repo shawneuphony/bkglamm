@@ -14,10 +14,7 @@ interface NavLink {
 interface NavbarClientProps {
   logo: string;
   links: NavLink[];
-  cta: {
-    label: string;
-    href: string;
-  };
+  cta: { label: string; href: string };
 }
 
 export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
@@ -25,7 +22,6 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
   const [visible, setVisible] = useState(true);
   const [lastY, setLastY]     = useState(0);
 
-  // Hide on scroll down, reveal on scroll up
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
@@ -36,7 +32,6 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [lastY]);
 
-  // Lock body scroll when mobile drawer is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -50,25 +45,40 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
           visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
         )}
       >
-        <nav className="w-full max-w-5xl flex items-center justify-between px-5 md:px-7 py-3 md:py-3.5 rounded-full bg-[#C9962A]/[0.10] backdrop-blur-xl border border-[#C9962A]/20">
-
+        {/*
+          Pill nav — warm dark glass with gold border,
+          matching the navbar visible in the screenshot
+        */}
+        <nav
+          className="w-full max-w-5xl flex items-center justify-between px-6 md:px-8 py-3 md:py-3.5 rounded-full"
+          style={{
+            background: "rgba(14, 11, 8, 0.65)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(201, 169, 110, 0.25)",
+          }}
+        >
           {/* Brand */}
           <Link
             href="/"
-            className="font-display text-[1.05rem] md:text-[1.1rem] font-semibold text-[#F5DC90]/90 tracking-wide hover:text-[#F5C842] transition-colors"
+            className="font-display text-[1.05rem] md:text-[1.1rem] font-semibold tracking-wide transition-colors"
+            style={{ color: "#c9a96e" }}
           >
             {logo}
           </Link>
 
           {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-7 lg:gap-9">
+          <ul className="hidden md:flex items-center gap-9">
             {links.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   target={link.openInNewTab ? "_blank" : undefined}
                   rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                  className="text-[0.73rem] font-body font-normal tracking-[0.08em] uppercase text-[#C9962A]/60 hover:text-[#F5C842] transition-colors"
+                  className="text-[0.72rem] font-body font-normal tracking-[0.1em] uppercase transition-colors"
+                  style={{ color: "rgba(240, 230, 211, 0.55)" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#c9a96e")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "rgba(240, 230, 211, 0.55)")}
                 >
                   {link.label}
                 </Link>
@@ -76,17 +86,31 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
             ))}
           </ul>
 
-          {/* Desktop CTA */}
+          {/* Desktop CTA — gold outlined pill matching screenshot */}
           <Link
             href={cta.href}
-            className="hidden md:inline-flex items-center text-[0.73rem] font-body font-medium tracking-[0.06em] uppercase text-[#1A0D04] bg-[#C9962A] hover:bg-[#F5C842] border border-[#F5C842]/30 hover:border-[#F5C842] px-5 py-2.5 rounded-full transition-all"
+            className="hidden md:inline-flex items-center font-body text-[0.72rem] font-semibold tracking-[0.1em] uppercase px-5 py-2.5 rounded-full transition-all"
+            style={{
+              color: "#c9a96e",
+              border: "1px solid rgba(201, 169, 110, 0.5)",
+              background: "transparent",
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(201, 169, 110, 0.1)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201, 169, 110, 0.8)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.background = "transparent";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(201, 169, 110, 0.5)";
+            }}
           >
             {cta.label}
           </Link>
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden text-[#C9962A]/80 hover:text-[#F5C842] p-1 transition-colors"
+            className="md:hidden p-1 transition-colors"
+            style={{ color: "#c9a96e" }}
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
             aria-expanded={open}
@@ -96,33 +120,37 @@ export default function NavbarClient({ logo, links, cta }: NavbarClientProps) {
         </nav>
       </header>
 
-      {/* Mobile full-screen drawer */}
+      {/* Mobile drawer */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-[#1A0D04]/97 backdrop-blur-xl flex flex-col pt-24 px-8 gap-6 md:hidden",
-          "transition-all duration-300",
+          "fixed inset-0 z-40 flex flex-col pt-24 px-8 gap-6 md:hidden transition-all duration-300",
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
+        style={{ background: "rgba(10, 8, 5, 0.97)", backdropFilter: "blur(24px)" }}
       >
-        {/* Mobile links */}
         {links.map((link, i) => (
           <Link
             key={link.href}
             href={link.href}
-            target={link.openInNewTab ? "_blank" : undefined}
-            rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-            className="font-display text-3xl font-light text-[#C9962A]/70 hover:text-[#F5C842] transition-colors"
-            style={{ transitionDelay: open ? `${i * 40}ms` : "0ms" }}
+            className="font-display text-3xl font-light transition-colors"
+            style={{
+              color: "rgba(240, 230, 211, 0.7)",
+              transitionDelay: open ? `${i * 40}ms` : "0ms",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#c9a96e")}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(240, 230, 211, 0.7)")}
             onClick={() => setOpen(false)}
           >
             {link.label}
           </Link>
         ))}
-
-        {/* Mobile CTA */}
         <Link
           href={cta.href}
-          className="mt-4 inline-flex self-start text-sm font-body tracking-widest uppercase font-medium text-[#1A0D04] bg-[#C9962A] border border-[#F5C842]/30 hover:bg-[#F5C842] px-6 py-3 rounded-full transition-all"
+          className="mt-4 inline-flex self-start font-body text-sm tracking-widest uppercase font-medium px-6 py-3 rounded-full"
+          style={{
+            color: "#c9a96e",
+            border: "1px solid rgba(201, 169, 110, 0.4)",
+          }}
           onClick={() => setOpen(false)}
         >
           {cta.label}

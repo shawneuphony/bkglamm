@@ -6,44 +6,26 @@ import Link from "next/link";
 
 export const revalidate = 60;
 
-// ── Fallback data ─────────────────────────────────────────────
 const FALLBACK = {
-  hero: {
-    eyebrow:  "Our story",
-    headline: "We curate what matters.",
-    subtext:
-      "We started with a simple belief — that great products shouldn't be hard to find. So we built a catalog that does the searching for you.",
-    image: null,
-  },
+  hero: { eyebrow: "Our story", headline: "We curate what matters.", subtext: "We started with a simple belief — that great beauty shouldn't be hard to find.", image: null },
   mission: {
-    label:     "What we believe",
-    statement: "Our mission is to connect people with products that are made thoughtfully, priced fairly, and built to last.",
+    label: "What we believe",
+    statement: "Our mission is to make every client feel like the best version of themselves.",
     pillars: [
-      { title: "Thoughtful curation",  description: "Every product is reviewed before it reaches the catalog." },
-      { title: "Honest pricing",       description: "No hidden fees, no inflated compare-at prices."           },
-      { title: "Built to last",        description: "We only list products built with longevity in mind."      },
+      { title: "Craft over shortcuts", description: "Every technique is practised, refined, and taken seriously." },
+      { title: "You, amplified",       description: "We enhance your natural beauty — not replace it."           },
+      { title: "Built on trust",       description: "When you sit in our chair, you're not a booking. You're a person." },
     ],
   },
   stats: [
-    { value: "500+",   label: "Products curated"  },
-    { value: "12,000", label: "Happy customers"   },
-    { value: "3",      label: "Years running"     },
-    { value: "100%",   label: "Quality verified"  },
+    { value: "500+", label: "Clients served"      },
+    { value: "3+",   label: "Years running"       },
+    { value: "100%", label: "Quality guaranteed"  },
   ],
-  team: {
-    label:    "The people behind it",
-    headline: "Built by a small team with big taste.",
-    members:  [],
-  },
-  cta: {
-    headline:    "Ready to explore the catalog?",
-    subtext:     "Browse products curated for real life.",
-    buttonLabel: "Shop now",
-    buttonHref:  "/shop",
-  },
+  team: { label: "The people behind it", headline: "Built by a small team with big taste.", members: [] },
+  cta:  { headline: "Ready for your glow-up?", subtext: "Book your appointment via WhatsApp.", buttonLabel: "Book now", buttonHref: "/shop" },
 };
 
-// ── Data fetching ─────────────────────────────────────────────
 async function getAboutData() {
   try {
     const payload = await getPayload({ config });
@@ -58,17 +40,15 @@ async function getAboutData() {
       mission: {
         label:     data.mission?.label     || FALLBACK.mission.label,
         statement: data.mission?.statement || FALLBACK.mission.statement,
-        pillars:   (data.mission?.pillars  && data.mission.pillars.length > 0)
-          ? data.mission.pillars
+        pillars:   ((data.mission?.pillars as any[])?.length > 0)
+          ? data.mission.pillars as any[]
           : FALLBACK.mission.pillars,
       },
-      stats:   (data.stats  && (data.stats as any[]).length  > 0) ? data.stats  as any[] : FALLBACK.stats,
+      stats:   ((data.stats as any[])?.length > 0) ? data.stats as any[] : FALLBACK.stats,
       team: {
         label:    data.team?.label    || FALLBACK.team.label,
         headline: data.team?.headline || FALLBACK.team.headline,
-        members:  (data.team?.members && (data.team.members as any[]).length > 0)
-          ? data.team.members as any[]
-          : FALLBACK.team.members,
+        members:  ((data.team?.members as any[])?.length > 0) ? data.team.members as any[] : [],
       },
       cta: {
         headline:    data.cta?.headline    || FALLBACK.cta.headline,
@@ -77,71 +57,66 @@ async function getAboutData() {
         buttonHref:  data.cta?.buttonHref  || FALLBACK.cta.buttonHref,
       },
     };
-  } catch {
-    return FALLBACK;
-  }
+  } catch { return FALLBACK; }
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title:       "About",
-    description: "Learn about who we are and what we stand for.",
-  };
+  return { title: "About", description: "Learn about BKGlamm and what we stand for." };
 }
 
-// ── Page ──────────────────────────────────────────────────────
 export default async function AboutPage() {
   const { hero, mission, stats, team, cta } = await getAboutData();
 
   return (
-    <main className="min-h-screen bg-[#09090f] text-white">
+    <main className="min-h-screen" style={{ background: "#0e0b08", color: "#f0e6d3" }}>
 
       {/* ── Hero ── */}
       <section className="pt-40 pb-20 px-6 lg:px-10 max-w-5xl mx-auto">
         <div className="space-y-6 max-w-2xl">
           {hero.eyebrow && (
-            <p className="text-[0.68rem] font-body tracking-[0.18em] uppercase text-white/35">
+            <p className="text-[0.68rem] font-body tracking-[0.18em] uppercase" style={{ color: "#8a6e3e" }}>
               {hero.eyebrow}
             </p>
           )}
           <h1
-            className="font-display font-normal text-white/90 leading-[1.05] tracking-tight"
-            style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
+            className="font-display font-normal leading-[1.05] tracking-tight"
+            style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)", color: "#f0e6d3" }}
           >
             {hero.headline}
           </h1>
           {hero.subtext && (
-            <p className="font-body text-lg text-white/45 leading-relaxed max-w-xl">
+            <p className="font-body text-lg leading-relaxed max-w-xl" style={{ color: "#9a8470" }}>
               {hero.subtext}
             </p>
           )}
         </div>
 
-        {/* Hero image */}
         {hero.image?.url && (
-          <div className="mt-16 relative w-full aspect-[16/7] rounded-2xl overflow-hidden border border-white/[0.07]">
+          <div
+            className="mt-16 relative w-full aspect-[16/7] rounded-2xl overflow-hidden"
+            style={{ border: "1px solid #2e2419" }}
+          >
             <Image
               src={hero.image.url}
               alt={hero.image.alt ?? hero.headline}
-              fill
-              priority
+              fill priority
               sizes="(max-width: 1280px) 100vw, 1024px"
-              className="object-cover object-center"
+              className="object-cover"
             />
           </div>
         )}
       </section>
 
-      {/* ── Stats row ── */}
+      {/* ── Stats ── */}
       {stats.length > 0 && (
-        <section className="py-16 px-6 lg:px-10 border-y border-white/[0.06]">
+        <section className="py-16 px-6 lg:px-10" style={{ borderTop: "1px solid #2e2419", borderBottom: "1px solid #2e2419" }}>
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat: any, i: number) => (
               <div key={i} className="space-y-1 text-center md:text-left">
-                <p className="font-display text-4xl md:text-5xl font-normal text-white/85">
+                <p className="font-display text-4xl md:text-5xl font-normal" style={{ color: "#c9a96e" }}>
                   {stat.value}
                 </p>
-                <p className="font-body text-sm text-white/35 tracking-wide">
+                <p className="font-body text-sm tracking-wide" style={{ color: "#9a8470" }}>
                   {stat.label}
                 </p>
               </div>
@@ -153,34 +128,29 @@ export default async function AboutPage() {
       {/* ── Mission ── */}
       <section className="py-24 px-6 lg:px-10 max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-16 items-start">
-
-          {/* Statement */}
           <div className="space-y-4">
             {mission.label && (
-              <p className="text-[0.68rem] font-body tracking-[0.18em] uppercase text-white/35">
+              <p className="text-[0.68rem] font-body tracking-[0.18em] uppercase" style={{ color: "#8a6e3e" }}>
                 {mission.label}
               </p>
             )}
             <blockquote
-              className="font-display font-normal text-white/80 leading-snug"
-              style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)" }}
+              className="font-display font-normal leading-snug"
+              style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", color: "#f0e6d3" }}
             >
               "{mission.statement}"
             </blockquote>
           </div>
 
-          {/* Pillars */}
+          {/* Pillar cards — hover via CSS class .card-warm */}
           <div className="space-y-4">
             {(mission.pillars as any[]).map((pillar: any, i: number) => (
-              <div
-                key={i}
-                className="p-5 rounded-2xl bg-white/[0.04] border border-white/[0.07] space-y-1.5 hover:bg-white/[0.07] transition-colors"
-              >
-                <p className="font-body text-sm font-medium text-white/75">
+              <div key={i} className="card-warm p-5 space-y-1.5">
+                <p className="font-body text-sm font-medium" style={{ color: "#c9a96e" }}>
                   {pillar.title}
                 </p>
                 {pillar.description && (
-                  <p className="font-body text-sm text-white/35 leading-relaxed">
+                  <p className="font-body text-sm leading-relaxed" style={{ color: "#9a8470" }}>
                     {pillar.description}
                   </p>
                 )}
@@ -192,18 +162,17 @@ export default async function AboutPage() {
 
       {/* ── Team ── */}
       {team.members.length > 0 && (
-        <section className="py-24 px-6 lg:px-10 border-t border-white/[0.06]">
+        <section className="py-24 px-6 lg:px-10" style={{ borderTop: "1px solid #2e2419" }}>
           <div className="max-w-5xl mx-auto space-y-16">
-
             <div className="space-y-3">
               {team.label && (
-                <p className="text-[0.68rem] font-body tracking-[0.18em] uppercase text-white/35">
+                <p className="text-[0.68rem] font-body tracking-[0.18em] uppercase" style={{ color: "#8a6e3e" }}>
                   {team.label}
                 </p>
               )}
               <h2
-                className="font-display font-normal text-white/85"
-                style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)" }}
+                className="font-display font-normal"
+                style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", color: "#f0e6d3" }}
               >
                 {team.headline}
               </h2>
@@ -212,8 +181,10 @@ export default async function AboutPage() {
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
               {team.members.map((member: any, i: number) => (
                 <div key={i} className="space-y-4">
-                  {/* Photo */}
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-white/[0.04] border border-white/[0.07]">
+                  <div
+                    className="relative aspect-[4/5] rounded-2xl overflow-hidden"
+                    style={{ background: "#1a1510", border: "1px solid #2e2419" }}
+                  >
                     {member.photo?.url ? (
                       <Image
                         src={member.photo.url}
@@ -223,28 +194,17 @@ export default async function AboutPage() {
                         className="object-cover object-top"
                       />
                     ) : (
-                      // Placeholder initials
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="font-display text-4xl text-white/20">
-                          {member.name?.charAt(0) ?? "?"}
+                        <span className="font-display text-4xl" style={{ color: "#3d3020" }}>
+                          {member.name?.charAt(0)}
                         </span>
                       </div>
                     )}
                   </div>
                   <div className="space-y-0.5 px-1">
-                    <p className="font-body text-sm font-medium text-white/80">
-                      {member.name}
-                    </p>
-                    {member.role && (
-                      <p className="font-body text-xs text-white/35 tracking-wide">
-                        {member.role}
-                      </p>
-                    )}
-                    {member.bio && (
-                      <p className="font-body text-xs text-white/30 leading-relaxed pt-1">
-                        {member.bio}
-                      </p>
-                    )}
+                    <p className="font-body text-sm font-medium" style={{ color: "#f0e6d3" }}>{member.name}</p>
+                    {member.role && <p className="font-body text-xs tracking-wide" style={{ color: "#8a6e3e" }}>{member.role}</p>}
+                    {member.bio  && <p className="font-body text-xs leading-relaxed pt-1" style={{ color: "#9a8470" }}>{member.bio}</p>}
                   </div>
                 </div>
               ))}
@@ -254,33 +214,34 @@ export default async function AboutPage() {
       )}
 
       {/* ── CTA ── */}
-      <section className="py-32 px-6 text-center border-t border-white/[0.06]">
-        <div className="max-w-lg mx-auto space-y-6">
-          {/* Ambient glow */}
-          <div className="absolute left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-violet-700/20 blur-[100px] pointer-events-none" />
-
+      <section
+        className="py-32 px-6 text-center relative overflow-hidden"
+        style={{ borderTop: "1px solid #2e2419" }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(ellipse at center, rgba(201,169,110,0.06) 0%, transparent 70%)" }}
+        />
+        <div className="relative max-w-lg mx-auto space-y-6">
           <h2
-            className="relative font-display font-normal text-white/90"
-            style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
+            className="font-display font-normal"
+            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#f0e6d3" }}
           >
             {cta.headline}
           </h2>
           {cta.subtext && (
-            <p className="relative font-body text-white/40 text-base">
+            <p className="font-body text-base" style={{ color: "#9a8470" }}>
               {cta.subtext}
             </p>
           )}
-          <div className="relative pt-2">
-            <Link
-              href={cta.buttonHref}
-              className="inline-flex items-center font-body text-[0.75rem] tracking-[0.12em] uppercase font-medium text-white/90 bg-white/10 hover:bg-white/20 border border-white/[0.18] hover:border-white/35 px-8 py-3.5 rounded-full transition-all"
-            >
+          <div className="pt-2">
+            {/* btn-gold-outline — pure CSS hover, no JS needed */}
+            <Link href={cta.buttonHref} className="btn-gold-outline">
               {cta.buttonLabel}
             </Link>
           </div>
         </div>
       </section>
-
     </main>
   );
 }

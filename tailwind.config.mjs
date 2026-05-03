@@ -2,6 +2,25 @@
 const config = {
   theme: {
     extend: {
+      colors: {
+        brand: {
+          50:  '#fef7e8',
+          100: '#fef0d1',
+          200: '#fde2a4',
+          300: '#fcd376',
+          400: '#fbc549',
+          500: '#C9962A', // main gold
+          600: '#a47822',
+          700: '#7e5a1a',
+          800: '#593d12',
+          900: '#342009',
+        },
+        skin: {
+          warm: '#C68642',
+          mid:  '#8D5524',
+          rich: '#4A2912',
+        },
+      },
       typography: {
         DEFAULT: {
           css: [
