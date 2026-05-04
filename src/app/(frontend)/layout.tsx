@@ -3,12 +3,12 @@ import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Storefront",
-    default:  "Storefront – Curated Products",
+    template: "%s | bkglamm",
+    default:  "bkglamm",
   },
-  description: "A living catalog of products made for real life.",
+  description: "get glamm'd up",
   openGraph: {
-    siteName: "Storefront",
+    siteName: "bkglamm",
     type: "website",
   },
 };
