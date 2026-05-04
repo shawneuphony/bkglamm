@@ -41,14 +41,14 @@ async function getAboutData() {
         label:     data.mission?.label     || FALLBACK.mission.label,
         statement: data.mission?.statement || FALLBACK.mission.statement,
         pillars:   ((data.mission?.pillars as any[])?.length > 0)
-          ? data.mission.pillars as any[]
-          : FALLBACK.mission.pillars,
+  ? data.mission?.pillars as any[]
+  : FALLBACK.mission.pillars,
       },
       stats:   ((data.stats as any[])?.length > 0) ? data.stats as any[] : FALLBACK.stats,
       team: {
         label:    data.team?.label    || FALLBACK.team.label,
         headline: data.team?.headline || FALLBACK.team.headline,
-        members:  ((data.team?.members as any[])?.length > 0) ? data.team.members as any[] : [],
+        members:  ((data.team?.members as any[])?.length > 0) ? data.team?.members as any[] : [],
       },
       cta: {
         headline:    data.cta?.headline    || FALLBACK.cta.headline,
