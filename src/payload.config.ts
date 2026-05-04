@@ -1,3 +1,4 @@
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import Navigation   from "./globals/Navigation";
 import HomepageHero  from "./globals/HomepageHero";
 import SiteFooter    from "./globals/SiteFooter";
@@ -60,7 +61,16 @@ export default buildConfig({
     AboutPage,      // About page content
     SiteSettings,   // ← WhatsApp number + contact info
   ],
-  plugins,
+  plugins: [
+  ...plugins,
+  vercelBlobStorage({
+    enabled: true,
+    collections: {
+      media: true,
+    },
+    token: process.env.BLOB_READ_WRITE_TOKEN || '',
+  }),
+],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
