@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Outfit } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -30,12 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      {/*
-        bg-[#0e0b08] = warm near-black matching the video overlay
-        text-[#f0e6d3] = warm cream matching the hero typography
-      */}
       <body className="antialiased bg-[#0e0b08] text-[#f0e6d3]">
-        <Navbar />
         {children}
       </body>
     </html>
