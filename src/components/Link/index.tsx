@@ -6,7 +6,7 @@ import React from 'react'
 import type { Page, Post } from '@/payload-types'
 
 type CMSLinkType = {
-  appearance?: 'inline' | 'link' | ButtonProps['variant'] | null
+  appearance?: 'inline' | 'link' | 'default' | ButtonProps['variant'] | null
   children?: React.ReactNode
   className?: string
   label?: string | null
@@ -54,7 +54,12 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   }
 
   return (
-    <Button asChild className={className} size={sizeFromProps} variant={appearance ?? 'primary'}>
+    <Button
+      asChild
+      className={className}
+      size={sizeFromProps ?? undefined}
+      variant={appearance as ButtonProps['variant']}
+    >
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}
