@@ -1,9 +1,9 @@
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
-import Navigation   from "./globals/Navigation";
-import HomepageHero  from "./globals/HomepageHero";
-import SiteFooter    from "./globals/SiteFooter";
-import AboutPage     from "./globals/AboutPage";
-import SiteSettings  from "./globals/SiteSettings";  // ← new
+import Navigation  from './globals/Navigation'
+import HomepageHero from './globals/HomepageHero'
+import SiteFooter   from './globals/SiteFooter'
+import AboutPage    from './globals/AboutPage'
+import SiteSettings from './globals/SiteSettings'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import sharp from 'sharp'
 import path from 'path'
@@ -53,24 +53,24 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, Users, Products],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [
-    Header,         // Payload template internals — keep
-    Footer,         // Payload template internals — keep
-    Navigation,     // Storefront navbar
-    HomepageHero,   // Homepage hero section
-    SiteFooter,     // Site-wide footer
-    AboutPage,      // About page content
-    SiteSettings,   // ← WhatsApp number + contact info
+    Header,
+    Footer,
+    Navigation,
+    HomepageHero,
+    SiteFooter,
+    AboutPage,
+    SiteSettings,
   ],
   plugins: [
-  ...plugins,
-  vercelBlobStorage({
-    enabled: true,
-    collections: {
-      media: true,
-    },
-    token: process.env.BLOB_READ_WRITE_TOKEN || '',
-  }),
-],
+    ...plugins,
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+  ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
