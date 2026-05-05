@@ -218,33 +218,41 @@ export default async function CatalogGrid() {
   const rightCol = products.filter((_, i) => i % 2 !== 0);
 
   return (
-    <section className="w-full px-6 lg:px-10 py-24">
-      <div className="max-w-2xl mx-auto flex h-64 items-center justify-center">
-        <div className="space-y-2 text-center">
-          <h2
-            className="font-display text-4xl md:text-7xl font-bold leading-none drop-shadow-lg"
-            style={{ color: "#c9a96e" }}
-          >
-            our look book
-          </h2>
-        </div>
+  <section className="w-full px-6 lg:px-10 py-24">
+    <div className="max-w-2xl mx-auto flex h-64 items-center justify-center">
+      <div className="space-y-2 text-center">
+        <h2
+          className="font-display text-4xl md:text-7xl font-bold leading-none drop-shadow-lg"
+          style={{ color: "#c9a96e" }}
+        >
+          our look book
+        </h2>
+      </div>
+    </div>
+
+    {/* Mobile: single column block list */}
+    <div className="md:hidden max-w-sm mx-auto flex flex-col gap-8">
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+
+    {/* Desktop: staggered two-column layout */}
+    <div className="hidden md:grid max-w-4xl mx-auto grid-cols-2 gap-x-40 gap-y-0">
+      {/* Left column */}
+      <div className="flex flex-col gap-10">
+        {leftCol.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
 
-      <div className="max-w-4xl mx-auto grid grid-cols-2 gap-x-40 gap-y-0">
-        {/* Left column */}
-        <div className="flex flex-col gap-10">
-          {leftCol.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-
-        {/* Right column – offset downward */}
-        <div className="flex flex-col gap-10 mt-36">
-          {rightCol.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+      {/* Right column – offset downward */}
+      <div className="flex flex-col gap-10 mt-36">
+        {rightCol.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
 }
