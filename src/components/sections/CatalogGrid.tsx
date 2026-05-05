@@ -255,4 +255,4 @@ export default async function CatalogGrid() {
     </div>
   </section>
 );
-}
+} /* end */
