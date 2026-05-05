@@ -64,15 +64,12 @@ export default buildConfig({
   plugins: [
     ...plugins,
     vercelBlobStorage({
-  enabled: true,
-  collections: {
-    media: {
-      generateFileURL: undefined,
-    },
-  },
-  token: process.env.BLOB_READ_WRITE_TOKEN || '',
-  clientUploads: true, // ← here, on the plugin itself
-}),
+      enabled: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
